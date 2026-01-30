@@ -1,43 +1,43 @@
-# OpenClaw WeCom Plugin (Dual Mode)
+# OpenClaw 企业微信插件（双模式）
 
-English | [中文](README.zh.md)
+中文 | [English](README.en.md)
 
-OpenClaw WeCom plugin supporting **Bot API mode** and **Internal App mode** with multi-account, media, and group chat.
+OpenClaw WeCom 插件，支持 **智能机器人 API 模式** 与 **自建应用模式**（双模式），并支持多账户、媒体消息与群聊。
 
-> `docs/TECHNICAL.md` is the source of truth. Read it before development.
+> 以 `docs/TECHNICAL.md` 为准；开发前请先阅读。
 
-## Features
-- Dual mode: Bot API (JSON callback + stream) / App (XML callback + ACK + proactive send)
-- Multi-account: `channels.wecom.accounts`
-- Message types: text / image / voice / video / file (send & receive)
-- Commands: `/help`, `/status`, `/clear`
-- Stability: signature verification, AES decrypt, token cache, rate limit & retries
-- Group chat: uses `appchat/send` when `chatId` is present
+## 功能概览
+- 双模式：Bot API（JSON 回调 + stream）/ App（XML 回调 + ACK + 主动发送）
+- 多账户：`channels.wecom.accounts`
+- 消息类型：文本 / 图片 / 语音 / 视频 / 文件（收发均支持）
+- 机器人命令：`/help`、`/status`、`/clear`
+- 稳定性：签名校验、AES 解密、token 缓存、限流与重试
+- 群聊：自动识别 `chatId` 并使用 `appchat/send`
 
-## Install
-### npm
+## 安装
+### npm 安装
 ```bash
 openclaw plugins install @openclaw/wecom-dual
 openclaw plugins enable wecom
 openclaw gateway restart
 ```
 
-### Local path
+### 本地路径加载
 ```bash
-openclaw plugins install --link /path/to/openclaw-wecom/project
+openclaw plugins install --link /path/to/openclaw-wecom
 openclaw plugins enable wecom
 openclaw gateway restart
 ```
 
-## Configuration
-Write config to `~/.openclaw/openclaw.json`.  
-Recommended: use main config only; env vars are fallback.
+## 配置
+主配置写入：`~/.openclaw/openclaw.json`  
+推荐仅使用主配置；环境变量仅作为兜底。
 
-Minimal example: `docs/wecom.config.example.json`  
-Full example: `docs/wecom.config.full.example.json`  
-Install guide: `docs/INSTALL.md`
+最小示例：`docs/wecom.config.example.json`  
+全量示例：`docs/wecom.config.full.example.json`  
+安装与配置说明：`docs/INSTALL.md`
 
-### Minimal config
+### 最小配置示例
 ```json5
 {
   "channels": {
@@ -58,41 +58,41 @@ Install guide: `docs/INSTALL.md`
 }
 ```
 
-### Key notes
-- Bot mode `receiveId`: recommended to set **Bot ID (aibotid)** for strict crypto validation
-- App mode decryption uses **CorpID** (`corpId`)
+### 关键字段说明
+- Bot 模式 `receiveId`：建议填写 **Bot ID（aibotid）**，用于回调加解密校验
+- App 模式回调解密使用 **CorpID**（`corpId`）
 
-## Webhook setup (WeCom Admin)
-### Bot mode
-- URL: `https://your-domain/wecom`
-- Token: custom string
-- EncodingAESKey: generated in admin
-- Bot ID (aibotid): map to `receiveId`
+## 回调配置（企业微信后台）
+### Bot 模式
+- URL：`https://你的域名/wecom`
+- Token：自定义
+- EncodingAESKey：后台生成
+- Bot ID（aibotid）：填写到 `receiveId`
 
-### App mode
-- URL: `https://your-domain/wecom`
-- Token / EncodingAESKey: map to `callbackToken` / `callbackAesKey`
-- CorpID / AgentID / Secret: map to `corpId` / `agentId` / `corpSecret`
+### App 模式
+- URL：`https://你的域名/wecom`
+- Token / EncodingAESKey：后台生成，对应 `callbackToken` / `callbackAesKey`
+- CorpID / AgentID / Secret：分别对应 `corpId` / `agentId` / `corpSecret`
 
-> HTTPS is required. Restart OpenClaw gateway after enabling the plugin.
+> 两种模式都要求公网 HTTPS；配置完成后请重启 OpenClaw gateway。
 
-## Modes
-- `mode: "bot"`: Bot API only
-- `mode: "app"`: App only
-- `mode: "both"`: both modes (default)
+## 模式说明
+- `mode: "bot"`：只启用智能机器人 API 模式
+- `mode: "app"`：只启用自建应用模式
+- `mode: "both"`：同时启用两种模式（默认）
 
-## Media handling
-- App mode: downloads inbound media to local temp dir (`media.tempDir`)
-- Bot mode media bridge: if reply payload includes `mediaUrl + mediaType`,
-  and App credentials are present, media will be uploaded and sent
+## 媒体处理说明
+- App 模式：收到媒体会下载到本地临时目录（可配置 `media.tempDir`）
+- Bot 模式媒体桥接：当 reply payload 含 `mediaUrl + mediaType` 时，
+  若已配置 App 凭据，会自动上传并发送媒体
 
-## Troubleshooting
-- Callback verification failed: check Token / AESKey / URL
-- No reply: ensure plugin enabled and gateway restarted
-- Media too large: adjust `media.maxBytes` or send smaller files
-- invalid access_token: verify `corpId/corpSecret/agentId`
+## 常见问题
+- 回调验证失败：检查 Token / AESKey / URL 是否一致
+- 没有回复：确认已启用插件并重启 gateway
+- 媒体过大：调整 `media.maxBytes` 或发送更小文件
+- invalid access_token：检查 `corpId/corpSecret/agentId`
 
-## Docs
-- Dev doc: `docs/TECHNICAL.md`
-- Install: `docs/INSTALL.md`
-- Examples: `docs/wecom.config.example.json` / `docs/wecom.config.full.example.json`
+## 资料入口
+- 开发文档：`docs/TECHNICAL.md`
+- 安装配置：`docs/INSTALL.md`
+- 配置示例：`docs/wecom.config.example.json` / `docs/wecom.config.full.example.json`

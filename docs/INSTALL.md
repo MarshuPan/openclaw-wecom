@@ -11,7 +11,7 @@ openclaw gateway restart
 
 ### 方式二：本地路径加载
 ```bash
-openclaw plugins install --link /path/to/openclaw-wecom/project
+openclaw plugins install --link /path/to/openclaw-wecom
 openclaw plugins enable wecom
 openclaw gateway restart
 ```
