@@ -1,0 +1,82 @@
+{
+  "name": "@openclaw/wecom-dual",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "OpenClaw WeCom channel plugin (intelligent bot + internal app)",
+  "author": "OpenClaw",
+  "main": "wecom/index.ts",
+  "openclaw": {
+    "extensions": [
+      "./wecom/index.ts"
+    ],
+    "channel": {
+      "id": "wecom",
+      "label": "WeCom",
+      "selectionLabel": "WeCom (plugin)",
+      "detailLabel": "WeCom",
+      "docsPath": "/channels/wecom",
+      "docsLabel": "wecom",
+      "blurb": "Enterprise WeCom: bot API + internal app (dual mode).",
+      "aliases": [
+        "wechatwork",
+        "wework",
+        "qywx",
+        "企微",
+        "企业微信"
+      ],
+      "order": 85
+    },
+    "install": {
+      "npmSpec": "@openclaw/wecom-dual",
+      "localPath": ".",
+      "defaultChoice": "npm"
+    }
+  },
+  "clawdbot": {
+    "extensions": [
+      "./wecom/index.ts"
+    ],
+    "channel": {
+      "id": "wecom",
+      "label": "WeCom",
+      "selectionLabel": "WeCom (plugin)",
+      "detailLabel": "WeCom",
+      "docsPath": "/channels/wecom",
+      "docsLabel": "wecom",
+      "blurb": "Enterprise WeCom: bot API + internal app (dual mode).",
+      "aliases": [
+        "wechatwork",
+        "wework",
+        "qywx",
+        "企微",
+        "企业微信"
+      ],
+      "order": 85
+    },
+    "install": {
+      "npmSpec": "@openclaw/wecom-dual",
+      "localPath": ".",
+      "defaultChoice": "npm"
+    }
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.1.25"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.3.6",
+    "zod": "^3.23.8"
+  },
+  "keywords": [
+    "openclaw",
+    "wecom",
+    "wechat-work",
+    "channel",
+    "plugin"
+  ],
+  "license": "ISC",
+  "files": [
+    "wecom/**",
+    "docs/**",
+    "README.md"
+  ]
+}
