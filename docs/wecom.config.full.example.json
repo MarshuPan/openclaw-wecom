@@ -1,0 +1,55 @@
+{
+  "channels": {
+    "wecom": {
+      "enabled": true,
+      "mode": "both",
+      "webhookPath": "/wecom",
+
+      "token": "BOT_TOKEN",
+      "encodingAESKey": "BOT_AES",
+      "receiveId": "BOT_ID",
+
+      "corpId": "CORP_ID",
+      "corpSecret": "CORP_SECRET",
+      "agentId": 1000001,
+      "callbackToken": "CALLBACK_TOKEN",
+      "callbackAesKey": "CALLBACK_AES",
+
+      "media": {
+        "tempDir": "/tmp/openclaw-wecom",
+        "retentionHours": 72,
+        "cleanupOnStart": true,
+        "maxBytes": 10485760
+      },
+      "botMediaBridge": true,
+
+      "dm": {
+        "policy": "pairing",
+        "allowFrom": []
+      },
+
+      "defaultAccount": "default",
+      "accounts": {
+        "default": {
+          "mode": "both",
+          "webhookPath": "/wecom",
+          "token": "BOT_TOKEN",
+          "encodingAESKey": "BOT_AES",
+          "receiveId": "BOT_ID",
+          "corpId": "CORP_ID",
+          "corpSecret": "CORP_SECRET",
+          "agentId": 1000001,
+          "callbackToken": "CALLBACK_TOKEN",
+          "callbackAesKey": "CALLBACK_AES",
+          "media": {
+            "tempDir": "/tmp/openclaw-wecom",
+            "retentionHours": 72,
+            "cleanupOnStart": true,
+            "maxBytes": 10485760
+          },
+          "botMediaBridge": true
+        }
+      }
+    }
+  }
+}

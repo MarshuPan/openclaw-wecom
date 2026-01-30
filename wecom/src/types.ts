@@ -40,6 +40,24 @@ export type WecomAccountConfig = {
   agentId?: string | number;
   callbackToken?: string;
   callbackAesKey?: string;
+
+  // Media handling
+  media?: {
+    tempDir?: string;
+    retentionHours?: number;
+    cleanupOnStart?: boolean;
+    maxBytes?: number;
+  };
+
+  // Network behavior
+  network?: {
+    timeoutMs?: number;
+    retries?: number;
+    retryDelayMs?: number;
+  };
+
+  // If true (default), bot mode can bridge media via app send APIs.
+  botMediaBridge?: boolean;
 };
 
 export type WecomConfig = WecomAccountConfig & {

@@ -9,3 +9,4 @@ npm-debug.log*
 
 # OS
 .DS_Store
+docs/TECHNICAL.md

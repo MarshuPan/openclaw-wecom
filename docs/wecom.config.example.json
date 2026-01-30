@@ -1,0 +1,19 @@
+{
+  "channels": {
+    "wecom": {
+      "enabled": true,
+      "mode": "both",
+      "webhookPath": "/wecom",
+
+      "token": "BOT_TOKEN",
+      "encodingAESKey": "BOT_AES",
+      "receiveId": "BOT_ID",
+
+      "corpId": "CORP_ID",
+      "corpSecret": "CORP_SECRET",
+      "agentId": 1000001,
+      "callbackToken": "CALLBACK_TOKEN",
+      "callbackAesKey": "CALLBACK_AES"
+    }
+  }
+}

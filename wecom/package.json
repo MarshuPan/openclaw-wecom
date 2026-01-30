@@ -31,33 +31,6 @@
       "defaultChoice": "npm"
     }
   },
-  "clawdbot": {
-    "extensions": [
-      "./index.ts"
-    ],
-    "channel": {
-      "id": "wecom",
-      "label": "WeCom",
-      "selectionLabel": "WeCom (plugin)",
-      "detailLabel": "WeCom",
-      "docsPath": "/channels/wecom",
-      "docsLabel": "wecom",
-      "blurb": "Enterprise WeCom: bot API + internal app (dual mode).",
-      "aliases": [
-        "wechatwork",
-        "wework",
-        "qywx",
-        "企微",
-        "企业微信"
-      ],
-      "order": 85
-    },
-    "install": {
-      "npmSpec": "@openclaw/wecom-dual",
-      "localPath": ".",
-      "defaultChoice": "npm"
-    }
-  },
   "peerDependencies": {
     "openclaw": ">=2026.1.25"
   },

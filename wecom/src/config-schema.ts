@@ -29,6 +29,21 @@ const accountSchema = z.object({
   agentId: z.union([z.string(), z.number()]).optional(),
   callbackToken: z.string().optional(),
   callbackAesKey: z.string().optional(),
+
+  media: z.object({
+    tempDir: z.string().optional(),
+    retentionHours: z.number().optional(),
+    cleanupOnStart: z.boolean().optional(),
+    maxBytes: z.number().optional(),
+  }).optional(),
+
+  network: z.object({
+    timeoutMs: z.number().optional(),
+    retries: z.number().optional(),
+    retryDelayMs: z.number().optional(),
+  }).optional(),
+
+  botMediaBridge: z.boolean().optional(),
 });
 
 export const WecomConfigSchema = z.object({
@@ -48,6 +63,21 @@ export const WecomConfigSchema = z.object({
   agentId: z.union([z.string(), z.number()]).optional(),
   callbackToken: z.string().optional(),
   callbackAesKey: z.string().optional(),
+
+  media: z.object({
+    tempDir: z.string().optional(),
+    retentionHours: z.number().optional(),
+    cleanupOnStart: z.boolean().optional(),
+    maxBytes: z.number().optional(),
+  }).optional(),
+
+  network: z.object({
+    timeoutMs: z.number().optional(),
+    retries: z.number().optional(),
+    retryDelayMs: z.number().optional(),
+  }).optional(),
+
+  botMediaBridge: z.boolean().optional(),
 
   defaultAccount: z.string().optional(),
   accounts: z.object({}).catchall(accountSchema).optional(),

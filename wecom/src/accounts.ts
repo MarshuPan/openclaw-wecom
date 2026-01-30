@@ -3,6 +3,20 @@ import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk";
 
 import type { ResolvedWecomAccount, WecomAccountConfig, WecomConfig, WecomMode } from "./types.js";
 
+function resolveEnvValue(cfg: ClawdbotConfig, name: string): string | undefined {
+  const envVars = (cfg as any)?.env?.vars ?? {};
+  const fromCfg = envVars[name];
+  if (fromCfg != null && String(fromCfg).trim() !== "") return String(fromCfg).trim();
+  const fromProcess = process.env[name];
+  if (fromProcess != null && fromProcess.trim() !== "") return fromProcess.trim();
+  return undefined;
+}
+
+function resolveAccountEnv(cfg: ClawdbotConfig, accountId: string, key: string): string | undefined {
+  const prefix = accountId === DEFAULT_ACCOUNT_ID ? "WECOM" : `WECOM_${accountId.toUpperCase()}`;
+  return resolveEnvValue(cfg, `${prefix}_${key}`);
+}
+
 function listConfiguredAccountIds(cfg: ClawdbotConfig): string[] {
   const accounts = (cfg.channels?.wecom as WecomConfig | undefined)?.accounts;
   if (!accounts || typeof accounts !== "object") return [];
@@ -50,21 +64,52 @@ export function resolveWecomAccount(params: {
   const merged = mergeWecomAccountConfig(params.cfg, accountId);
   const enabled = baseEnabled && merged.enabled !== false;
 
-  const token = merged.token?.trim() || undefined;
-  const encodingAESKey = merged.encodingAESKey?.trim() || undefined;
-  const receiveId = merged.receiveId?.trim() ?? "";
+  const token = merged.token?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "TOKEN")
+    || undefined;
+  const encodingAESKey = merged.encodingAESKey?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "ENCODING_AES_KEY")
+    || undefined;
+  const receiveId = merged.receiveId?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "RECEIVE_ID")
+    || "";
 
-  const corpId = merged.corpId?.trim() || undefined;
-  const corpSecret = merged.corpSecret?.trim() || undefined;
-  const agentId = merged.agentId != null ? Number(merged.agentId) : undefined;
-  const callbackToken = merged.callbackToken?.trim() || undefined;
-  const callbackAesKey = merged.callbackAesKey?.trim() || undefined;
+  const corpId = merged.corpId?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "CORP_ID")
+    || undefined;
+  const corpSecret = merged.corpSecret?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "CORP_SECRET")
+    || undefined;
+  const agentIdRaw = merged.agentId != null ? String(merged.agentId) : resolveAccountEnv(params.cfg, accountId, "AGENT_ID");
+  const agentId = agentIdRaw != null ? Number(agentIdRaw) : undefined;
+  const callbackToken = merged.callbackToken?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "CALLBACK_TOKEN")
+    || undefined;
+  const callbackAesKey = merged.callbackAesKey?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "CALLBACK_AES_KEY")
+    || undefined;
+  const webhookPath = merged.webhookPath?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "WEBHOOK_PATH")
+    || undefined;
 
   const configuredBot = Boolean(token && encodingAESKey);
   const configuredApp = Boolean(corpId && corpSecret && agentId);
   const configured = configuredBot || configuredApp;
 
   const mode = resolveMode(merged.mode);
+
+  const mergedConfig: WecomAccountConfig = {
+    ...merged,
+    webhookPath,
+    token,
+    encodingAESKey,
+    receiveId,
+    corpId,
+    corpSecret,
+    agentId,
+    callbackToken,
+    callbackAesKey,
+  };
 
   return {
     accountId,
@@ -80,7 +125,7 @@ export function resolveWecomAccount(params: {
     agentId,
     callbackToken,
     callbackAesKey,
-    config: merged,
+    config: mergedConfig,
   };
 }
 
