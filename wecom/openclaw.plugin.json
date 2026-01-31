@@ -1,5 +1,5 @@
 {
-  "id": "wecom",
+  "id": "wecom-dual",
   "channels": ["wecom"],
   "configSchema": {
     "type": "object",

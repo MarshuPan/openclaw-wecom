@@ -18,7 +18,7 @@ OpenClaw WeCom plugin supporting **Bot API mode** and **Internal App mode** with
 ### npm
 ```bash
 openclaw plugins install @marshulll/wecom-dual
-openclaw plugins enable wecom
+openclaw plugins enable wecom-dual
 openclaw gateway restart
 ```
 

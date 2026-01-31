@@ -18,7 +18,7 @@ OpenClaw WeCom 插件，支持 **智能机器人 API 模式** 与 **自建应用
 ### npm 安装
 ```bash
 openclaw plugins install @marshulll/wecom-dual
-openclaw plugins enable wecom
+openclaw plugins enable wecom-dual
 openclaw gateway restart
 ```
 

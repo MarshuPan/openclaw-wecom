@@ -1,6 +1,6 @@
 {
   "name": "@marshulll/wecom-dual",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "OpenClaw WeCom channel plugin (intelligent bot + internal app)",
   "author": "OpenClaw",

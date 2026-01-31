@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.2 - 2026-01-31
+- Align plugin id with package name (`wecom-dual`) to avoid install warnings.
+
 ## 0.1.1 - 2026-01-31
 - Add root `openclaw.plugin.json` for OpenClaw plugin discovery.
 

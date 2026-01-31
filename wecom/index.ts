@@ -9,8 +9,8 @@ import { setWecomRuntime } from "./src/runtime.js";
 import { wecomPlugin } from "./src/channel.js";
 
 const plugin = {
-  id: "wecom",
-  name: "WeCom",
+  id: "wecom-dual",
+  name: "WeCom Dual",
   description: "OpenClaw WeCom channel plugin (bot API + internal app)",
   configSchema: emptyPluginConfigSchema(),
   register(api: ClawdbotPluginApi) {
