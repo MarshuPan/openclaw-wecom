@@ -1,6 +1,6 @@
 {
-  "name": "@marshulll/wecom-dual",
-  "version": "0.1.3",
+  "name": "@marshulll/openclaw-wecom",
+  "version": "0.1.4",
   "type": "module",
   "description": "OpenClaw WeCom channel plugin (intelligent bot + internal app)",
   "author": "OpenClaw",
@@ -26,7 +26,7 @@
       "order": 85
     },
     "install": {
-      "npmSpec": "@marshulll/wecom-dual",
+      "npmSpec": "@marshulll/openclaw-wecom",
       "localPath": ".",
       "defaultChoice": "npm"
     }

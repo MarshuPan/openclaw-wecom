@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.4 - 2026-01-31
+- Rename npm package to `@marshulll/openclaw-wecom`.
+
 ## 0.1.3 - 2026-01-31
 - Add JSON schema fallback for config schema to support OpenClaw runtimes.
 

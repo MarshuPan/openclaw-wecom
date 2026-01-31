@@ -4,8 +4,8 @@
 
 ### 方式一：npm 安装
 ```bash
-openclaw plugins install @marshulll/wecom-dual
-openclaw plugins enable wecom-dual
+openclaw plugins install @marshulll/openclaw-wecom
+openclaw plugins enable openclaw-wecom
 openclaw gateway restart
 ```
 
