@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.3 - 2026-01-31
+- Add JSON schema fallback for config schema to support OpenClaw runtimes.
+
 ## 0.1.2 - 2026-01-31
 - Align plugin id with package name (`wecom-dual`) to avoid install warnings.
 

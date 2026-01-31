@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+type JsonSchemaCapable = {
+  toJSONSchema?: () => unknown;
+};
+
+function ensureJsonSchema<T extends JsonSchemaCapable>(schema: T): T {
+  if (typeof schema.toJSONSchema === "function") return schema;
+  return Object.assign(schema, {
+    // Fallback for runtimes that expect Zod toJSONSchema.
+    toJSONSchema: () => ({ type: "object" }),
+  });
+}
+
 const allowFromEntry = z.union([z.string(), z.number()]);
 
 const dmSchema = z
@@ -46,7 +58,7 @@ const accountSchema = z.object({
   botMediaBridge: z.boolean().optional(),
 });
 
-export const WecomConfigSchema = z.object({
+export const WecomConfigSchema = ensureJsonSchema(z.object({
   name: z.string().optional(),
   enabled: z.boolean().optional(),
   mode: z.enum(["bot", "app", "both"]).optional(),
@@ -81,4 +93,4 @@ export const WecomConfigSchema = z.object({
 
   defaultAccount: z.string().optional(),
   accounts: z.object({}).catchall(accountSchema).optional(),
-});
+}));
