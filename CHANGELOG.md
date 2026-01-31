@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.5 - 2026-01-31
+- Fix install docs to use `openclaw-wecom` plugin id for enable.
+
 ## 0.1.4 - 2026-01-31
 - Rename npm package to `@marshulll/openclaw-wecom`.
 

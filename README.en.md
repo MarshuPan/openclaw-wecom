@@ -25,7 +25,7 @@ openclaw gateway restart
 ### Local path
 ```bash
 openclaw plugins install --link /path/to/openclaw-wecom
-openclaw plugins enable wecom
+openclaw plugins enable openclaw-wecom
 openclaw gateway restart
 ```
 
