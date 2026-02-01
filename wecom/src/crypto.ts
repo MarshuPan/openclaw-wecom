@@ -107,6 +107,21 @@ export function decryptWecomEncrypted(params: {
   return msg;
 }
 
+export function decryptWecomMedia(params: {
+  encodingAESKey: string;
+  buffer: Buffer;
+}): Buffer {
+  const aesKey = decodeEncodingAESKey(params.encodingAESKey);
+  const iv = aesKey.subarray(0, 16);
+  const decipher = crypto.createDecipheriv("aes-256-cbc", aesKey, iv);
+  decipher.setAutoPadding(false);
+  const decryptedPadded = Buffer.concat([
+    decipher.update(params.buffer),
+    decipher.final(),
+  ]);
+  return pkcs7Unpad(decryptedPadded, WECOM_PKCS7_BLOCK_SIZE);
+}
+
 export function encryptWecomPlaintext(params: {
   encodingAESKey: string;
   receiveId?: string;

@@ -40,6 +40,7 @@ export type WecomAccountConfig = {
   agentId?: string | number;
   callbackToken?: string;
   callbackAesKey?: string;
+  pushToken?: string;
 
   // Media handling
   media?: {
@@ -47,6 +48,45 @@ export type WecomAccountConfig = {
     retentionHours?: number;
     cleanupOnStart?: boolean;
     maxBytes?: number;
+    vision?: {
+      enabled?: boolean;
+      baseUrl?: string;
+      apiKey?: string;
+      model?: string;
+      prompt?: string;
+      maxTokens?: number;
+      timeoutMs?: number;
+      maxBytes?: number;
+    };
+    auto?: {
+      enabled?: boolean;
+      file?: {
+        enabled?: boolean;
+        textMaxBytes?: number;
+        textMaxChars?: number;
+        extensions?: string[];
+      };
+      audio?: {
+        enabled?: boolean;
+        baseUrl?: string;
+        apiKey?: string;
+        model?: string;
+        prompt?: string;
+        timeoutMs?: number;
+        maxBytes?: number;
+      };
+      video?: {
+        enabled?: boolean;
+        ffmpegPath?: string;
+        maxBytes?: number;
+        mode?: "light" | "full";
+        frames?: number;
+        intervalSec?: number;
+        maxDurationSec?: number;
+        maxFrames?: number;
+        includeAudio?: boolean;
+      };
+    };
   };
 
   // Network behavior
@@ -58,6 +98,16 @@ export type WecomAccountConfig = {
 
   // If true (default), bot mode can bridge media via app send APIs.
   botMediaBridge?: boolean;
+
+  // Send queue behavior (e.g., /sendfile)
+  sendQueue?: {
+    intervalMs?: number;
+  };
+
+  // Operation logs (optional)
+  operations?: {
+    logPath?: string;
+  };
 };
 
 export type WecomConfig = WecomAccountConfig & {

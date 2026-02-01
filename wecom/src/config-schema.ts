@@ -41,12 +41,52 @@ const accountSchema = z.object({
   agentId: z.union([z.string(), z.number()]).optional(),
   callbackToken: z.string().optional(),
   callbackAesKey: z.string().optional(),
+  pushToken: z.string().optional(),
 
   media: z.object({
     tempDir: z.string().optional(),
     retentionHours: z.number().optional(),
     cleanupOnStart: z.boolean().optional(),
     maxBytes: z.number().optional(),
+    vision: z.object({
+      enabled: z.boolean().optional(),
+      baseUrl: z.string().optional(),
+      apiKey: z.string().optional(),
+      model: z.string().optional(),
+      prompt: z.string().optional(),
+      maxTokens: z.number().optional(),
+      timeoutMs: z.number().optional(),
+      maxBytes: z.number().optional(),
+    }).optional(),
+    auto: z.object({
+      enabled: z.boolean().optional(),
+      file: z.object({
+        enabled: z.boolean().optional(),
+        textMaxBytes: z.number().optional(),
+        textMaxChars: z.number().optional(),
+        extensions: z.array(z.string()).optional(),
+      }).optional(),
+      audio: z.object({
+        enabled: z.boolean().optional(),
+        baseUrl: z.string().optional(),
+        apiKey: z.string().optional(),
+        model: z.string().optional(),
+        prompt: z.string().optional(),
+        timeoutMs: z.number().optional(),
+        maxBytes: z.number().optional(),
+      }).optional(),
+      video: z.object({
+        enabled: z.boolean().optional(),
+        ffmpegPath: z.string().optional(),
+        maxBytes: z.number().optional(),
+        mode: z.enum(["light", "full"]).optional(),
+        frames: z.number().optional(),
+        intervalSec: z.number().optional(),
+        maxDurationSec: z.number().optional(),
+        maxFrames: z.number().optional(),
+        includeAudio: z.boolean().optional(),
+      }).optional(),
+    }).optional(),
   }).optional(),
 
   network: z.object({
@@ -56,6 +96,14 @@ const accountSchema = z.object({
   }).optional(),
 
   botMediaBridge: z.boolean().optional(),
+
+  sendQueue: z.object({
+    intervalMs: z.number().optional(),
+  }).optional(),
+
+  operations: z.object({
+    logPath: z.string().optional(),
+  }).optional(),
 });
 
 export const WecomConfigSchema = ensureJsonSchema(z.object({
@@ -75,12 +123,52 @@ export const WecomConfigSchema = ensureJsonSchema(z.object({
   agentId: z.union([z.string(), z.number()]).optional(),
   callbackToken: z.string().optional(),
   callbackAesKey: z.string().optional(),
+  pushToken: z.string().optional(),
 
   media: z.object({
     tempDir: z.string().optional(),
     retentionHours: z.number().optional(),
     cleanupOnStart: z.boolean().optional(),
     maxBytes: z.number().optional(),
+    vision: z.object({
+      enabled: z.boolean().optional(),
+      baseUrl: z.string().optional(),
+      apiKey: z.string().optional(),
+      model: z.string().optional(),
+      prompt: z.string().optional(),
+      maxTokens: z.number().optional(),
+      timeoutMs: z.number().optional(),
+      maxBytes: z.number().optional(),
+    }).optional(),
+    auto: z.object({
+      enabled: z.boolean().optional(),
+      file: z.object({
+        enabled: z.boolean().optional(),
+        textMaxBytes: z.number().optional(),
+        textMaxChars: z.number().optional(),
+        extensions: z.array(z.string()).optional(),
+      }).optional(),
+      audio: z.object({
+        enabled: z.boolean().optional(),
+        baseUrl: z.string().optional(),
+        apiKey: z.string().optional(),
+        model: z.string().optional(),
+        prompt: z.string().optional(),
+        timeoutMs: z.number().optional(),
+        maxBytes: z.number().optional(),
+      }).optional(),
+      video: z.object({
+        enabled: z.boolean().optional(),
+        ffmpegPath: z.string().optional(),
+        maxBytes: z.number().optional(),
+        mode: z.enum(["light", "full"]).optional(),
+        frames: z.number().optional(),
+        intervalSec: z.number().optional(),
+        maxDurationSec: z.number().optional(),
+        maxFrames: z.number().optional(),
+        includeAudio: z.boolean().optional(),
+      }).optional(),
+    }).optional(),
   }).optional(),
 
   network: z.object({
@@ -90,6 +178,14 @@ export const WecomConfigSchema = ensureJsonSchema(z.object({
   }).optional(),
 
   botMediaBridge: z.boolean().optional(),
+
+  sendQueue: z.object({
+    intervalMs: z.number().optional(),
+  }).optional(),
+
+  operations: z.object({
+    logPath: z.string().optional(),
+  }).optional(),
 
   defaultAccount: z.string().optional(),
   accounts: z.object({}).catchall(accountSchema).optional(),

@@ -88,6 +88,9 @@ export function resolveWecomAccount(params: {
   const callbackAesKey = merged.callbackAesKey?.trim()
     || resolveAccountEnv(params.cfg, accountId, "CALLBACK_AES_KEY")
     || undefined;
+  const pushToken = merged.pushToken?.trim()
+    || resolveAccountEnv(params.cfg, accountId, "PUSH_TOKEN")
+    || undefined;
   const webhookPath = merged.webhookPath?.trim()
     || resolveAccountEnv(params.cfg, accountId, "WEBHOOK_PATH")
     || undefined;
@@ -109,6 +112,7 @@ export function resolveWecomAccount(params: {
     agentId,
     callbackToken,
     callbackAesKey,
+    pushToken,
   };
 
   return {

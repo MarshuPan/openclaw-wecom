@@ -1,6 +1,6 @@
 {
   "name": "@marshulll/openclaw-wecom",
-  "version": "0.1.5",
+  "version": "0.1.32",
   "type": "module",
   "description": "OpenClaw WeCom channel plugin (intelligent bot + internal app)",
   "author": "OpenClaw",
@@ -36,9 +36,15 @@
     "openclaw": ">=2026.1.25"
   },
   "dependencies": {
+    "archiver": "^6.0.2",
     "fast-xml-parser": "^4.3.6",
     "zod": "^3.23.8"
   },
+  "bundledDependencies": [
+    "archiver",
+    "fast-xml-parser",
+    "zod"
+  ],
   "keywords": [
     "openclaw",
     "wecom",
@@ -46,10 +52,11 @@
     "channel",
     "plugin"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "files": [
     "wecom/**",
     "docs/INSTALL.md",
+    "docs/TESTING.md",
     "docs/wecom.config.example.json",
     "docs/wecom.config.full.example.json",
     "openclaw.plugin.json",

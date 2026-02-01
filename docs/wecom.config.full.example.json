@@ -3,51 +3,82 @@
     "wecom": {
       "enabled": true,
       "mode": "both",
-      "webhookPath": "/wecom",
-
-      "token": "BOT_TOKEN",
-      "encodingAESKey": "BOT_AES",
-      "receiveId": "BOT_ID",
-
-      "corpId": "CORP_ID",
-      "corpSecret": "CORP_SECRET",
-      "agentId": 1000001,
-      "callbackToken": "CALLBACK_TOKEN",
-      "callbackAesKey": "CALLBACK_AES",
 
       "media": {
         "tempDir": "/tmp/openclaw-wecom",
         "retentionHours": 72,
         "cleanupOnStart": true,
-        "maxBytes": 10485760
+        "maxBytes": 10485760,
+        "vision": {
+          "enabled": true,
+          "baseUrl": "https://newapi.looksunlight.com/v1",
+          "apiKey": "YOUR_API_KEY",
+          "model": "gpt-4o-mini",
+          "prompt": "请描述图片内容并尽量提取可见文字。",
+          "maxTokens": 400,
+          "timeoutMs": 15000,
+          "maxBytes": 5242880
+        },
+        "auto": {
+          "enabled": true,
+          "file": {
+            "enabled": true,
+            "textMaxBytes": 200000,
+            "textMaxChars": 4000,
+            "extensions": ["txt", "md", "log", "csv", "json", "xml", "yaml", "yml"]
+          },
+          "audio": {
+            "enabled": true,
+            "baseUrl": "https://newapi.looksunlight.com/v1",
+            "apiKey": "YOUR_API_KEY",
+            "model": "gpt-4o-mini-transcribe",
+            "prompt": "请尽量保留原话并加上标点。",
+            "timeoutMs": 15000,
+            "maxBytes": 5242880
+          },
+          "video": {
+            "enabled": true,
+            "ffmpegPath": "ffmpeg",
+            "maxBytes": 104857600,
+            "mode": "light",
+            "frames": 5,
+            "intervalSec": 2,
+            "maxDurationSec": 60,
+            "maxFrames": 30
+          }
+        }
       },
       "botMediaBridge": true,
+      "sendQueue": {
+        "intervalMs": 400
+      },
+      "operations": {
+        "logPath": "/tmp/openclaw-wecom-ops.log"
+      },
 
       "dm": {
         "policy": "pairing",
         "allowFrom": []
       },
 
-      "defaultAccount": "default",
+      "defaultAccount": "bot",
       "accounts": {
-        "default": {
-          "mode": "both",
-          "webhookPath": "/wecom",
+        "bot": {
+          "mode": "bot",
+          "webhookPath": "/wecom/bot",
           "token": "BOT_TOKEN",
           "encodingAESKey": "BOT_AES",
-          "receiveId": "BOT_ID",
+          "receiveId": "BOT_ID"
+        },
+        "app": {
+          "mode": "app",
+          "webhookPath": "/wecom/app",
           "corpId": "CORP_ID",
           "corpSecret": "CORP_SECRET",
           "agentId": 1000001,
           "callbackToken": "CALLBACK_TOKEN",
           "callbackAesKey": "CALLBACK_AES",
-          "media": {
-            "tempDir": "/tmp/openclaw-wecom",
-            "retentionHours": 72,
-            "cleanupOnStart": true,
-            "maxBytes": 10485760
-          },
-          "botMediaBridge": true
+          "pushToken": "PUSH_TOKEN"
         }
       }
     }

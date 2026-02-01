@@ -61,6 +61,7 @@ class RateLimiter {
 
 const accessTokenCaches = new Map<string, WecomTokenState>();
 const apiLimiter = new RateLimiter({ maxConcurrent: 3, minInterval: 200 });
+export const MEDIA_TOO_LARGE_ERROR = "MEDIA_TOO_LARGE";
 
 function ensureAppConfig(account: ResolvedWecomAccount): { corpId: string; corpSecret: string; agentId: number } {
   const corpId = account.corpId ?? "";
@@ -104,6 +105,23 @@ async function fetchWithRetry(account: ResolvedWecomAccount, input: RequestInfo 
     attempt += 1;
   }
   throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
+}
+
+function resolveContentLength(res: Response): number | null {
+  const raw = res.headers.get("content-length");
+  if (!raw) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function ensureNotTooLarge(res: Response, maxBytes?: number): void {
+  if (!maxBytes || maxBytes <= 0) return;
+  const length = resolveContentLength(res);
+  if (length && length > maxBytes) {
+    const err = new Error(`${MEDIA_TOO_LARGE_ERROR}: content-length ${length} > limit ${maxBytes}`);
+    (err as { code?: string }).code = MEDIA_TOO_LARGE_ERROR;
+    throw err;
+  }
 }
 
 export async function getWecomAccessToken(account: ResolvedWecomAccount): Promise<string> {
@@ -335,8 +353,9 @@ export async function sendWecomFile(params: {
 export async function downloadWecomMedia(params: {
   account: ResolvedWecomAccount;
   mediaId: string;
+  maxBytes?: number;
 }): Promise<{ buffer: Buffer; contentType: string } > {
-  const { account, mediaId } = params;
+  const { account, mediaId, maxBytes } = params;
   const accessToken = await getWecomAccessToken(account);
   const mediaUrl = `https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=${encodeURIComponent(accessToken)}&media_id=${encodeURIComponent(mediaId)}`;
 
@@ -346,6 +365,7 @@ export async function downloadWecomMedia(params: {
   }
 
   const contentType = res.headers.get("content-type") || "";
+  ensureNotTooLarge(res, maxBytes);
   if (contentType.includes("application/json")) {
     const json = await res.json();
     throw new Error(`WeCom media download failed: ${JSON.stringify(json)}`);
@@ -355,11 +375,16 @@ export async function downloadWecomMedia(params: {
   return { buffer, contentType };
 }
 
-export async function fetchMediaFromUrl(url: string, account?: ResolvedWecomAccount): Promise<{ buffer: Buffer; contentType: string } > {
+export async function fetchMediaFromUrl(
+  url: string,
+  account?: ResolvedWecomAccount,
+  maxBytes?: number,
+): Promise<{ buffer: Buffer; contentType: string } > {
   const res = account ? await fetchWithRetry(account, url) : await fetch(url);
   if (!res.ok) {
     throw new Error(`Failed to fetch media from URL: ${res.status}`);
   }
+  ensureNotTooLarge(res, maxBytes);
   const buffer = Buffer.from(await res.arrayBuffer());
   const contentType = res.headers.get("content-type") || "application/octet-stream";
   return { buffer, contentType };

@@ -3,7 +3,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import type { ClawdbotConfig, PluginRuntime } from "openclaw/plugin-sdk";
 
 import type { ResolvedWecomAccount } from "./types.js";
-import { handleWecomAppWebhook } from "./wecom-app.js";
+import { handleWecomAppWebhook, handleWecomPushRequest } from "./wecom-app.js";
 import { handleWecomBotWebhook } from "./wecom-bot.js";
 
 export type WecomRuntimeEnv = {
@@ -55,6 +55,14 @@ export async function handleWecomWebhookRequest(
   const path = resolvePath(req);
   const targets = webhookTargets.get(path);
   if (!targets || targets.length === 0) return false;
+  if (path.endsWith("/push")) {
+    return await handleWecomPushRequest({ req, res, targets });
+  }
+  const firstTarget = targets[0];
+  const ua = req.headers["user-agent"] ?? "";
+  const fwd = req.headers["x-forwarded-for"] ?? "";
+  const ct = req.headers["content-type"] ?? "";
+  firstTarget?.runtime?.log?.(`[wecom] webhook ${req.method ?? "UNKNOWN"} ${req.url ?? ""} ct=${ct} ua=${ua} fwd=${fwd}`);
 
   // Prefer account-level mode. If both, we attempt bot first (JSON) then app (XML).
   // Concrete routing is implemented in handlers.

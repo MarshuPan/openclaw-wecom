@@ -183,6 +183,7 @@ export const wecomPlugin: ChannelPlugin<ResolvedWecomAccount> = {
         return { stop: () => {} };
       }
       const path = (account.config.webhookPath ?? "/wecom").trim();
+      const pushPath = path.endsWith("/") ? `${path}push` : `${path}/push`;
       const unregister = registerWecomWebhookTarget({
         account,
         config: ctx.cfg as ClawdbotConfig,
@@ -191,7 +192,16 @@ export const wecomPlugin: ChannelPlugin<ResolvedWecomAccount> = {
         path,
         statusSink: (patch) => ctx.setStatus({ accountId: ctx.accountId, ...patch }),
       });
+      const unregisterPush = registerWecomWebhookTarget({
+        account,
+        config: ctx.cfg as ClawdbotConfig,
+        runtime: ctx.runtime,
+        core: ({} as unknown) as any,
+        path: pushPath,
+        statusSink: (patch) => ctx.setStatus({ accountId: ctx.accountId, ...patch }),
+      });
       ctx.log?.info(`[${account.accountId}] wecom webhook registered at ${path}`);
+      ctx.log?.info(`[${account.accountId}] wecom push endpoint registered at ${pushPath}`);
       ctx.setStatus({
         accountId: account.accountId,
         running: true,
@@ -202,6 +212,7 @@ export const wecomPlugin: ChannelPlugin<ResolvedWecomAccount> = {
       return {
         stop: () => {
           unregister();
+          unregisterPush();
           ctx.setStatus({
             accountId: account.accountId,
             running: false,
