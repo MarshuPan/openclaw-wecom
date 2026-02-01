@@ -110,5 +110,3 @@
 - Multi-account support and media handling (text/image/voice/video/file).
 - Configuration templates and bilingual README.
 
-
-sed -n 's/^Environment=OPENCLAW_GATEWAY_TOKEN=//p' ~/.config/systemd/user/openclaw-gateway.service
