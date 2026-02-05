@@ -222,8 +222,8 @@ curl -X POST "https://your-domain/wecom/app/push" \
 
 Send messages via OpenClaw CLI:
 ```bash
-openclaw send --channel wecom --to WenShuJun "Hello"
-openclaw send --channel wecom --to chat:CHAT_ID "Group test"
+openclaw message send --channel wecom --target WenShuJun "Hello"
+openclaw message send --channel wecom --target chat:CHAT_ID "Group test"
 ```
 
 ## OpenClaw Tool Permissions
