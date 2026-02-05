@@ -59,7 +59,12 @@ export function resolveWecomAccount(params: {
   cfg: ClawdbotConfig;
   accountId?: string | null;
 }): ResolvedWecomAccount {
-  const accountId = normalizeAccountId(params.accountId);
+  //const accountId = normalizeAccountId(params.accountId);
+  let rawId = params.accountId;
+  if (!rawId || rawId === DEFAULT_ACCOUNT_ID) {
+     rawId = resolveDefaultWecomAccountId(params.cfg);
+  }
+  const accountId = normalizeAccountId(rawId);
   const baseEnabled = (params.cfg.channels?.wecom as WecomConfig | undefined)?.enabled !== false;
   const merged = mergeWecomAccountConfig(params.cfg, accountId);
   const enabled = baseEnabled && merged.enabled !== false;

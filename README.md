@@ -218,8 +218,8 @@ curl -X POST "https://你的域名/wecom/app/push" \
 
 通过 OpenClaw CLI 主动发送消息：
 ```bash
-openclaw send --channel wecom --to WenShuJun "你好"
-openclaw send --channel wecom --to chat:CHAT_ID "群消息测试"
+openclaw message send --channel wecom --target WenShuJun "你好"
+openclaw message send --channel wecom --target chat:CHAT_ID "群消息测试"
 ```
 
 ## OpenClaw 工具权限配置
