@@ -169,7 +169,7 @@ async function sendWecomTextSingle(params: {
   toUser: string;
   chatId?: string;
   text: string;
-}): Promise<void> {
+}): Promise<any> {
   const { account, toUser, chatId, text } = params;
   const { agentId } = ensureAppConfig(account);
   const accessToken = await getWecomAccessToken(account);
@@ -191,6 +191,7 @@ async function sendWecomTextSingle(params: {
   if (sendJson?.errcode !== 0) {
     throw new Error(`WeCom message/send failed: ${JSON.stringify(sendJson)}`);
   }
+  return sendJson;
 }
 
 export async function sendWecomText(params: {
@@ -198,12 +199,12 @@ export async function sendWecomText(params: {
   toUser: string;
   chatId?: string;
   text: string;
-}): Promise<void> {
+}): Promise<any> {
   const { account, toUser, chatId, text } = params;
   const chunks = splitWecomText(text);
   for (const chunk of chunks) {
     if (!chunk) continue;
-    await sendWecomTextSingle({ account, toUser, chatId, text: chunk });
+    return await sendWecomTextSingle({ account, toUser, chatId, text: chunk });
   }
 }
 
