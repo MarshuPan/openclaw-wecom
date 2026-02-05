@@ -1,5 +1,5 @@
 {
-  "name": "@marshulll/openclaw-wecom",
+  "name": "wecom",
   "version": "0.1.38",
   "type": "module",
   "description": "OpenClaw WeCom channel plugin (intelligent bot + internal app)",
