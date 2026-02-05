@@ -157,6 +157,7 @@ export const wecomPlugin: ChannelPlugin<ResolvedWecomAccount> = {
         const lower = target.toLowerCase();
         const chatPrefixes = ["chat:", "chatid:", "group:"];
         const matchedPrefix = chatPrefixes.find((prefix) => lower.startsWith(prefix));
+        let res : any;
         if (matchedPrefix) {
           const chatId = target.slice(matchedPrefix.length).trim();
           if (!chatId) {
@@ -167,14 +168,14 @@ export const wecomPlugin: ChannelPlugin<ResolvedWecomAccount> = {
               error: new Error("WeCom outbound requires chatId after chat:/chatid:/group: prefix."),
             };
           }
-          await sendWecomText({
+          res = await sendWecomText({
             account,
             toUser: "",
             chatId,
             text: String(text ?? ""),
           });
         } else {
-          await sendWecomText({
+          res = await sendWecomText({
             account,
             toUser: target,
             text: String(text ?? ""),
@@ -183,7 +184,7 @@ export const wecomPlugin: ChannelPlugin<ResolvedWecomAccount> = {
         return {
           channel: "wecom",
           ok: true,
-          messageId: "",
+          messageId: res ? res.msgid : "",
         };
       } catch (err) {
         return {
