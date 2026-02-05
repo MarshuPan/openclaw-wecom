@@ -1,5 +1,5 @@
 {
-  "id": "openclaw-wecom",
+  "id": "wecom",
   "channels": ["wecom"],
   "configSchema": {
     "type": "object",
